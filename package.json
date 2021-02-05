@@ -1,0 +1,15 @@
+{
+  "name": "codegate",
+  "version": "0.0.1",
+  "description": "Control Access to codepaths with geo-fencing, ID allow/denylists and more",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/typescript/bin/tsc index"
+  },
+  "author": "Louis Lo",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.1.3"
+  }
+}
