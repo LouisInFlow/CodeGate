@@ -9,7 +9,7 @@ CodeGate makes it easy to gate codepaths so you can:
 CodeGate is:
 * Lightweight and performant
 * Simple API
-* Made for developer workflows
+* Optimized for developer workflows
 * Easily see configuration history because its in git
 * Client and Server compatible
 * Open Source
