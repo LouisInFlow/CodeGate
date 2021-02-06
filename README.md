@@ -7,6 +7,7 @@ CodeGate makes it easy to gate codepaths so you can:
 * Gradually rollout features to users
 * Segment specific features
 * Layer gates for laser focused targeting
+* test branching codepaths easily and reliably
 
 
 CodeGate is:
