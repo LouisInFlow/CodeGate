@@ -6,7 +6,7 @@ CodeGate makes it easy to gate codepaths so you can:
 * Gradually rollout features to users
 * Segment specific features
 * Layer gates for laser focused targeting
-* Reusable configuration
+
 
 CodeGate is:
 * Lightweight and performant
@@ -15,6 +15,7 @@ CodeGate is:
 * Easily see configuration history because its in git
 * Client and Server compatible
 * Open Source
+* Composible and reusable configuration
 
 ## Why use CodeGate?
 
