@@ -16,6 +16,7 @@ CodeGate is:
 * Client and Server compatible
 * Open Source
 * Composible and reusable configuration
+* Designed for power users, simple enough for every user
 
 ## Why use CodeGate?
 
