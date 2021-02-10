@@ -1,23 +1,28 @@
 const RuleEngine = require('./node-rules');
 
-type Condition = Function;
+type Short = Promise<boolean>;
+type Long = {
+  condition: Function; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
+  allow: number; // default 100% allow if func returns true
+};
+
 type Gate = {
   name: string;
   description: string;
-  rules: {
-    // can add property for layering gate
-    condition: Condition; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
-    allow?: number; // default 100% allow if func returns true
-  }[];
+  rules: (Short | Long)[];
 };
 
 export default async function BuildGate(gate: Gate): Promise<Function> {
   const rules = await Promise.all(
     gate.rules.map(async (rule) => {
+      console.log(rule);
       return {
         condition: async function (R) {
-          const match = await rule.condition(this);
-          R.when(match);
+          if (rule.condition) {
+            R.when(await rule.condition(this));
+          } else {
+            R.when(await rule(this));
+          }
         },
         consequence: function (R) {
           this.pass = Math.random() * 100 < (this.allow ?? 100);
@@ -27,7 +32,7 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
     })
   );
 
-  return (facts) => {
+  return (facts): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);
