@@ -13,5 +13,5 @@ const gate = {
 
 test('Basic Custom Function', async () => {
   const useNewFeature = await BuildGate(gate);
-  expect(await useNewFeature({ userId: 'louis' })).toBe(false);
+  expect(await useNewFeature({ userId: 'jamie' })).toBe(false);
 });

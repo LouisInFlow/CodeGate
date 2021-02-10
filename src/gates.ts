@@ -1,5 +1,5 @@
 export async function isSilverTier(): Promise<boolean> {
-  return Promise.resolve(true);
+  return Promise.resolve(false);
 }
 
 export async function isEmployee(facts): Promise<boolean> {

@@ -20,7 +20,7 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
           R.when(match);
         },
         consequence: function (R) {
-          this.result = Math.random() * 100 < rule.allow;
+          this.pass = Math.random() * 100 < rule.allow;
           R.stop();
         },
       };
@@ -31,8 +31,8 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);
-        R.execute(facts, function (result) {
-          resolve(result.result);
+        R.execute({ ...facts, pass: false }, function (result) {
+          resolve(result.pass);
         });
       } catch (e) {
         reject(e);
