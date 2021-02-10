@@ -2573,14 +2573,6 @@ node-notifier@^8.0.0:
     uuid "^8.3.0"
     which "^2.0.2"
 
-node-rules@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/node-rules/-/node-rules-6.2.0.tgz#487cb8ac329d1c716174e91a8403000196a65e9c"
-  integrity sha512-/GmHH4DRR4zeJ/hrFkCaxE5LWe/G241HzXD9OCcNCrxHlqrzqK3kJX+OaA0Z/aDNLvSt2QV91eUgUsE3gAp24A==
-  dependencies:
-    lodash.clonedeep "^4.5.0"
-    lodash.isequal "^4.5.0"
-
 normalize-package-data@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.5.0.tgz#e66db1838b200c1dfc233225d12cb36520e234a8"
