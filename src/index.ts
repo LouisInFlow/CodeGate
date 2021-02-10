@@ -1,46 +1,42 @@
-type Gate = Promise<boolean>;
-type OverrideType = 'ip' | 'id' | 'subnet'; //cidr;
+const RuleEngine = require('node-rules');
 
-type Overrides = {
-  ipAllow?: string[];
-  ipDeny?: string[];
-  idAllow?: string[];
-  idDeny: string[];
+type Condition = Function;
+type Gate = {
+  name: string;
+  description: string;
+  rules: {
+    // can add property for layering gate
+    condition: Condition; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
+    allow: number; // default 100% allow if func returns true
+  }[];
 };
-interface InitializeCodeGateConfig {
-  name?: string;
-  description?: string;
-  userId?: string;
-  gates?: unknown[];
-  overrides?: Overrides;
-}
 
-export default async function ({
-  gates,
-  overrides,
-  userId,
-  name,
-  description,
-}: InitializeCodeGateConfig): Promise<boolean> {
-  const AllowUser = await checkAllowOverrides(userId, overrides); // OR
-  const DenyUser = await checkDenyOverrides(userId, overrides); // NOT
-  if (AllowUser && DenyUser) throw Error('Allows and Denies user');
-  if (AllowUser) return true;
-  if (DenyUser) return false;
-
-  return await checkGates(userId, gates); // AND
-}
-
-function checkAllowOverrides(userId, overrides): Promise<boolean> {
-  return Promise.resolve(false);
-}
-function checkDenyOverrides(userId, overrides): Promise<boolean> {
-  return Promise.resolve(false);
-}
-
-function checkGates(userId, gates): Promise<boolean> {
-  const promises = gates.map((gate) => () => gate(userId));
-  return Promise.all(promises).then((resolvedPromises) =>
-    resolvedPromises.every((a) => a)
+export default async function BuildGate(gate: Gate): Promise<Function> {
+  const rules = await Promise.all(
+    gate.rules.map(async (rule) => {
+      const match = await rule.condition(this);
+      return {
+        condition: function (R) {
+          R.when(match);
+        },
+        consequence: function (R) {
+          this.result = Math.random() * 100 < rule.allow;
+          R.stop();
+        },
+      };
+    })
   );
+
+  return (facts) => {
+    return new Promise((resolve, reject) => {
+      try {
+        var R = new RuleEngine(rules);
+        R.execute(facts, function (result) {
+          resolve(result.result);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  };
 }

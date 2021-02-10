@@ -2,8 +2,9 @@ export async function isSilverTier(): Promise<boolean> {
   return Promise.resolve(true);
 }
 
-export async function needsArgs(a, b, c): Promise<boolean> {
-  return Promise.resolve(a && b && c ? true : false);
+export async function isEmployee(facts): Promise<boolean> {
+  const allowList = ['louis'];
+  return Promise.resolve(allowList.includes(facts.userId));
 }
 
 // async function getGeo() {
