@@ -18,3 +18,10 @@ test('Custom Function that takes args', async () => {
 
   expect(await useNewFeature).toBe(true);
 });
+
+// All employees, 30% USA, 60% France, Deny these 5 users
+// All employees, deny this subnet
+// 10% of users, deny these 3 userIds, allow these 7 users
+// Allow these 7 users only
+// Allow these subnet but deny these 8 users
+// 80% users, allow these 7, deny these 8
