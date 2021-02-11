@@ -1,5 +1,5 @@
 import BuildGate from '../src/index';
-import { isAnyUser, isEmployee } from '../src/gates';
+import { isAnyUser, isEmployee } from '../src/rules';
 
 const gate = {
   name: 'featureA',
