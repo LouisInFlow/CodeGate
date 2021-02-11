@@ -19,10 +19,10 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
       console.log(rule);
       return {
         condition: async function (R) {
-          if (rule.condition) {
-            R.when(await rule.condition(this));
-          } else {
+          if (typeof rule === 'function') {
             R.when(await rule(this));
+          } else {
+            R.when(await rule.condition(this));
           }
         },
         consequence: function (R) {
