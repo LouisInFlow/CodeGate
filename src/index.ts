@@ -1,8 +1,9 @@
 const RuleEngine = require('./node-rules');
 
-type Short = Promise<boolean>;
+type Short = (...args: unknown[]) => Promise<boolean>;
+
 type Long = {
-  condition: Function; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
+  condition: (...args: unknown[]) => Promise<boolean>; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
   allow: number; // default 100% allow if func returns true
 };
 
@@ -18,10 +19,10 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
       console.log(rule);
       return {
         condition: async function (R) {
-          if (rule.condition) {
-            R.when(await rule.condition(this));
-          } else {
+          if (typeof rule === 'function') {
             R.when(await rule(this));
+          } else {
+            R.when(await rule.condition(this));
           }
         },
         consequence: function (R) {
