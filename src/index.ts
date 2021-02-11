@@ -1,22 +1,11 @@
 const RuleEngine = require('./node-rules');
+import { GateConfig, Facts, Gate } from './types';
 
-type Short = (...args: unknown[]) => Promise<boolean>;
-
-type Long = {
-  condition: (...args: unknown[]) => Promise<boolean>; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
-  allow: number; // default 100% allow if func returns true
-};
-
-type Gate = {
-  name: string;
-  description: string;
-  rules: (Short | Long)[];
-};
-
-export default async function BuildGate(gate: Gate): Promise<Function> {
+export default async function BuildGate(
+  gate: GateConfig
+): Promise<(facts?: Facts) => Gate> {
   const rules = await Promise.all(
     gate.rules.map(async (rule) => {
-      console.log(rule);
       return {
         condition: async function (R) {
           if (typeof rule === 'function') {
@@ -33,7 +22,7 @@ export default async function BuildGate(gate: Gate): Promise<Function> {
     })
   );
 
-  return (facts): Promise<boolean> => {
+  return function Gate(facts: Facts = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);

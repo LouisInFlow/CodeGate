@@ -1,14 +1,36 @@
 import BuildGate from '../src/index';
-import { isAnyUser, isEmployee } from '../src/gates';
+import { isAnyUser, canPassArgumentsToRule, passesGate } from '../src/rules';
 
-const gate = {
-  name: 'featureA',
-  description:
-    'featureA is our new d3 based implementation we hope will replace our canvas implementation',
-  rules: [isEmployee, { condition: isAnyUser, allow: 100 }],
-};
-
-test('Basic Custom Function', async () => {
-  const useNewFeature = await BuildGate(gate);
+test('Can pass arguments to rule', async () => {
+  const useNewFeature = await BuildGate({
+    name: 'canPassArgumentsToRule',
+    description: 'testing canPassArgumentsToRule',
+    rules: [canPassArgumentsToRule],
+  });
   expect(await useNewFeature({ userId: 'louis' })).toBe(true);
 });
+
+test('Can use gate as rule', async () => {
+  const gateAsRuleGate = await BuildGate({
+    name: 'canUseGateAsRule',
+    description: 'tests that nesting gates works as expected',
+    rules: [
+      () =>
+        passesGate({ name: 'isAnyUser', description: '', rules: [isAnyUser] }),
+    ],
+  });
+  expect(await gateAsRuleGate()).toBe(true);
+});
+
+// isPastStartTime
+// returns true if past time
+// returns false if before time
+// allow parameter
+// returns true with 100 allow
+// returns false with 0 allow
+// do statistcal method to test gate certain percentage
+// isAnyUser
+// returns true
+// short rule works
+// long rule works
+// sequencing rules works

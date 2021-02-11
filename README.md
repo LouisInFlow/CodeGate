@@ -1,35 +1,37 @@
 # CodeGate
 
-CodeGate makes it easy to gate codepaths in a continuous delivery safe way so you can:
-* Safely Test features in production without it being publicly available 
-* dogfood features
-* Restrict access by ip, id, subnet, geography, time/schedule, request or custom logic
-* Gradually rollout features to users
-* Segment specific features
-* Layer gates for laser focused targeting
-* test branching codepaths easily and reliably
+---
 
+CodeGate is an open-source [Feature Flag](https://martinfowler.com/articles/feature-toggles.html) library focused on productivity. Use it anywhere Javascript or Typescript is written. Our API minimizes context switching through:
 
+- Configuration-in-code for easy referencing, versioning and collaboration. Never leave developer environment.
+- Declarative gating model, maximizing re-usability and understandability of gating logic.
+- Promise based for flexibility and easy rule making. Can utilize any Javascript/Typescript features and libraries in custom logic.
 
-CodeGate is:
-* Lightweight and performant
-* Simple API
-* Optimized for developer workflows
-* Easily see configuration history because its in git, ideal for Continuous Delivery pipelines, infra/config as code
-* Client and Server compatible
-* Open Source
-* Composible and reusable configuration
-* Designed for power users, simple enough for every user
-* Minimal complexity, even with complex targeting
+### Built in rules & gates
 
-## Why use CodeGate?
+- Geo Restriction
+- ip Restriction
+- Subnet Restriction
+- Time based Restriction
+- Nested gates
+- Percentage Restriction
 
-## Getting Started
+### Installation
 
-## References
-https://martinfowler.com/articles/feature-toggles.html
-https://dougseven.com/2014/04/17/knightmare-a-devops-cautionary-tale/
-https://www.kitchensoap.com/2013/10/29/counterfactuals-knight-capital/
+`yarn add codegate`
+`npm install codegate`
 
-## License
+### Example usage
+
+### References
+
+- https://martinfowler.com/articles/feature-toggles.html
+
+### Special Thanks
+
+- @jtlong3rd Typescript guru and programming mentor
+
+### License
+
 Apache-2.0
