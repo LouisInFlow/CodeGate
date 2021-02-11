@@ -1,10 +1,23 @@
-export async function isSilverTier(): Promise<boolean> {
-  return Promise.resolve(false);
+interface Facts {
+  startTime?: number;
+  userId?: string;
 }
 
-export async function isEmployee(facts): Promise<boolean> {
+export async function isEmployee(facts: Facts): Promise<boolean> {
   const allowList = ['louis'];
   return Promise.resolve(allowList.includes(facts.userId));
+}
+
+export async function isAnyUser(): Promise<boolean> {
+  return Promise.resolve(true);
+}
+
+export async function isPastStartTime(facts: Facts): Promise<boolean> {
+  return Promise.resolve(facts.startTime <= Date.now());
+}
+
+export async function passesGate(facts: Facts): Promise<boolean> {
+  return Promise.resolve(facts.startTime <= Date.now());
 }
 
 // async function getGeo() {
