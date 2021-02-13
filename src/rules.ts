@@ -1,7 +1,9 @@
 import { Facts, Gate, GateConfig } from './types';
 import BuildGate from '../src/index';
 
-export async function canPassArgumentsToRule(facts: Facts): Promise<boolean> {
+export async function canPassArgumentsToRule(facts: {
+  userId: string;
+}): Promise<boolean> {
   const allowList = ['louis'];
   return Promise.resolve(allowList.includes(facts.userId));
 }
