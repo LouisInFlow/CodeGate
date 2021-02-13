@@ -1,4 +1,4 @@
-import { Facts, Gate, GateConfig } from './types';
+import { GateConfig } from './types';
 import BuildGate from '../src/index';
 
 export async function canPassArgumentsToRule(facts: {
@@ -12,11 +12,11 @@ export async function isAnyUser(): Promise<boolean> {
   return Promise.resolve(true);
 }
 
-export async function isPastStartTime(facts: Facts): Promise<boolean> {
+export async function isPastStartTime(facts: { startTime: number }): Promise<boolean> {
   return Promise.resolve(facts.startTime <= Date.now());
 }
 
-export async function passesGate(gateConfig: GateConfig): Promise<boolean> {
+export async function passesGate<F extends {}>(gateConfig: GateConfig<F>): Promise<boolean> {
   const passesNestedGate = await BuildGate(gateConfig);
   return await passesNestedGate();
 }

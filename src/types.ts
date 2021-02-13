@@ -1,18 +1,13 @@
 export type Gate = Promise<boolean>;
-export type Short = (facts: Facts) => Gate;
-export type Long = {
-  condition: (facts: Facts) => Gate;
+export type Short<F extends {}> = (facts: F) => Gate;
+export type Long<F extends {}> = {
+  condition: (facts: F) => Gate;
   allow?: number;
 };
+export type Rule<F extends {}> = Short<F> | Long<F>;
 
-export type GateConfig = {
+export type GateConfig<F extends {}> = {
   name: string;
   description: string;
-  rules: (Short | Long)[];
-};
-
-export type Facts = {
-  startTime?: number;
-  userId?: string;
-  gate?: GateConfig;
+  rules: Rule<F>[];
 };
