@@ -1,9 +1,7 @@
-interface Facts {
-  startTime?: number;
-  userId?: string;
-}
+import { Facts, Gate, GateConfig } from './types';
+import BuildGate from '../src/index';
 
-export async function isEmployee(facts: Facts): Promise<boolean> {
+export async function canPassArgumentsToRule(facts: Facts): Promise<boolean> {
   const allowList = ['louis'];
   return Promise.resolve(allowList.includes(facts.userId));
 }
@@ -16,8 +14,9 @@ export async function isPastStartTime(facts: Facts): Promise<boolean> {
   return Promise.resolve(facts.startTime <= Date.now());
 }
 
-export async function passesGate(facts: Facts): Promise<boolean> {
-  return Promise.resolve(facts.startTime <= Date.now());
+export async function passesGate(gateConfig: GateConfig): Promise<boolean> {
+  const passesNestedGate = await BuildGate(gateConfig);
+  return await passesNestedGate();
 }
 
 // async function getGeo() {

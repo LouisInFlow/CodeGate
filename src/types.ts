@@ -1,11 +1,18 @@
-export type Short = (...args: unknown[]) => Promise<boolean>;
+export type Gate = Promise<boolean>;
+export type Short = (facts: Facts) => Gate;
 export type Long = {
-  condition: (...args: unknown[]) => Promise<boolean>; // examples rules include: isEmployee, isBronzeTier, isInUSACanada
-  allow?: number; // default 100% allow if func returns true
+  condition: (facts: Facts) => Gate;
+  allow?: number;
 };
 
-export type Gate = {
+export type GateConfig = {
   name: string;
   description: string;
   rules: (Short | Long)[];
+};
+
+export type Facts = {
+  startTime?: number;
+  userId?: string;
+  gate?: GateConfig;
 };
