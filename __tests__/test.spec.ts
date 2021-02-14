@@ -15,8 +15,7 @@ test('Can use gate as rule', async () => {
     name: 'canUseGateAsRule',
     description: 'tests that nesting gates works as expected',
     rules: [
-      () =>
-        passesGate({ name: 'isAnyUser', description: '', rules: [isAnyUser] }),
+      passesGate({ name: 'isAnyUser', description: '', rules: [isAnyUser] }),
     ],
   });
   expect(await gateAsRuleGate({})).toBe(true);
