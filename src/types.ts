@@ -3,14 +3,14 @@
 // The return type of BuildGate suggests the latter.
 export type Gate = Promise<boolean>;
 
-export type Short<F extends {}> = (facts: F) => Gate;
-export type Long<F extends {}> = {
+export type Short<F> = (facts: F) => Gate;
+export type Long<F> = {
   condition: (facts: F) => Gate;
   allow?: number;
 };
-export type Rule<F extends {}> = Short<F> | Long<F>;
+export type Rule<F> = Short<F> | Long<F>;
 
-export type GateConfig<F extends {}> = {
+export type GateConfig<F> = {
   name: string;
   description: string;
   rules: Rule<F>[];

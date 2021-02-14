@@ -3,7 +3,7 @@ import { ExtractGateConfigFacts, Gate, GateConfig } from './types';
 
 export default async function BuildGate<T extends GateConfig<any>>(
   gate: T
-): Promise<(facts?: ExtractGateConfigFacts<T>) => Gate> {
+): Promise<(facts: ExtractGateConfigFacts<T>) => Gate> {
   const rules = await Promise.all(
     gate.rules.map(async (rule) => {
       return {
@@ -22,9 +22,7 @@ export default async function BuildGate<T extends GateConfig<any>>(
     })
   );
 
-  return function Gate(
-    facts = {} as ExtractGateConfigFacts<T>
-  ) {
+  return function Gate(facts) {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);

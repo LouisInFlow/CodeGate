@@ -19,7 +19,7 @@ export async function isPastStartTime(facts: { startTime: number }): Promise<boo
 // TODO: How do we accommodate gates which expect at least one fact?
 export async function passesGate(gateConfig: GateConfig<{}>): Promise<boolean> {
   const passesNestedGate = await BuildGate(gateConfig);
-  return await passesNestedGate();
+  return await passesNestedGate({});
 }
 
 // async function getGeo() {
