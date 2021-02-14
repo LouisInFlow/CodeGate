@@ -1,5 +1,10 @@
 import BuildGate from '../src/index';
-import { isAnyUser, canPassArgumentsToRule, passesGate } from '../src/rules';
+import {
+  canPassArgumentsToRule,
+  isAnyUser,
+  isPastStartTime,
+  passesGate
+} from '../src/rules';
 
 test('Can pass arguments to rule', async () => {
   const useNewFeature = await BuildGate({
@@ -8,6 +13,18 @@ test('Can pass arguments to rule', async () => {
     rules: [canPassArgumentsToRule],
   });
   expect(await useNewFeature({ userId: 'louis' })).toBe(true);
+});
+
+test('Can build gates with multiple correctly enforced rules', async () => {
+  const useNewFeature = await BuildGate({
+    name: 'canPassArgumentsToRule',
+    description: 'testing canPassArgumentsToRule',
+    rules: [canPassArgumentsToRule, isPastStartTime],
+  });
+  expect(await useNewFeature({ userId: 'jamie', startTime: Date.now() + 10000 })).toBe(false)
+  expect(await useNewFeature({ userId: 'jamie', startTime: Date.now() - 1 })).toBe(false);
+  expect(await useNewFeature({ userId: 'louis', startTime: Date.now() + 10000 })).toBe(false);
+  expect(await useNewFeature({ userId: 'louis', startTime: Date.now() - 1 })).toBe(true);
 });
 
 test('Can use gate as rule', async () => {
