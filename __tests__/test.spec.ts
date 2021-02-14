@@ -19,7 +19,7 @@ test('Can use gate as rule', async () => {
         passesGate({ name: 'isAnyUser', description: '', rules: [isAnyUser] }),
     ],
   });
-  expect(await gateAsRuleGate()).toBe(true);
+  expect(await gateAsRuleGate({})).toBe(true);
 });
 
 // isPastStartTime
