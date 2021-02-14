@@ -1,9 +1,9 @@
 const RuleEngine = require('./node-rules');
-import { GateConfig, Gate } from './types';
+import { ExtractGateConfigFacts, Gate, GateConfig } from './types';
 
-export default async function BuildGate<F extends {}>(
-  gate: GateConfig<F>
-): Promise<(facts?: F) => Gate> {
+export default async function BuildGate<T extends GateConfig<any>>(
+  gate: T
+): Promise<(facts?: ExtractGateConfigFacts<T>) => Gate> {
   const rules = await Promise.all(
     gate.rules.map(async (rule) => {
       return {
@@ -22,7 +22,9 @@ export default async function BuildGate<F extends {}>(
     })
   );
 
-  return function Gate(facts: F = {} as F): Promise<boolean> {
+  return function Gate(
+    facts = {} as ExtractGateConfigFacts<T>
+  ) {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);
