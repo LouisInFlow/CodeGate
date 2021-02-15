@@ -22,8 +22,8 @@ test('Can build gates with multiple correctly enforced rules', async () => {
     rules: [canPassArgumentsToRule, isPastStartTime],
   });
   expect(await useNewFeature({ userId: 'jamie', startTime: Date.now() + 10000 })).toBe(false)
-  expect(await useNewFeature({ userId: 'jamie', startTime: Date.now() - 1 })).toBe(false);
-  expect(await useNewFeature({ userId: 'louis', startTime: Date.now() + 10000 })).toBe(false);
+  expect(await useNewFeature({ userId: 'jamie', startTime: Date.now() - 1 })).toBe(true);
+  expect(await useNewFeature({ userId: 'louis', startTime: Date.now() + 10000 })).toBe(true);
   expect(await useNewFeature({ userId: 'louis', startTime: Date.now() - 1 })).toBe(true);
 });
 
