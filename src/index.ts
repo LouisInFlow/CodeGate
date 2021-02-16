@@ -1,11 +1,11 @@
 const RuleEngine = require('./node-rules');
-import { ExtractGateConfigFacts, Gate, GateConfig } from './types';
+import { ExtractGateConfigParams, Gate, GateConfig } from './types';
 
 export default async function BuildGate<T extends GateConfig<any>>(
   gate: T
-): Promise<(facts: ExtractGateConfigFacts<T>) => Gate> {
+): Promise<(facts: ExtractGateConfigParams<T>) => Gate> {
   const rules = await Promise.all(
-    gate.rules.map(async (rule) => {
+    gate.targeting.map(async (rule) => {
       return {
         condition: async function (R) {
           if (typeof rule === 'function') {
@@ -22,11 +22,11 @@ export default async function BuildGate<T extends GateConfig<any>>(
     })
   );
 
-  return function Gate(facts) {
+  return function Gate(params) {
     return new Promise((resolve, reject) => {
       try {
         var R = new RuleEngine(rules);
-        R.execute(facts, function (result) {
+        R.execute(params, function (result) {
           resolve(result.pass ?? false);
         });
       } catch (e) {
