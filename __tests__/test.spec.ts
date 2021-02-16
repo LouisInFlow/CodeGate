@@ -60,7 +60,9 @@ test('Can use complex rules', async () => {
     targeting: [
       (params) =>
         new Promise(async (resolve, reject) => {
-          resolve((await isAnyUser()) && canPassArgumentsToRule(params));
+          resolve(
+            (await isAnyUser()) && (await canPassArgumentsToRule(params))
+          );
         }),
     ],
   });
