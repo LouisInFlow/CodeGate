@@ -1,18 +1,24 @@
+// TODO: Is a Gate a Promise<boolean>,
+// or a function which returns a Promise<boolean>?
+// The return type of BuildGate suggests the latter.
 export type Gate = Promise<boolean>;
-export type Short = (facts: Facts) => Gate;
-export type Long = {
-  condition: (facts: Facts) => Gate;
+
+export type Short<F> = (facts: F) => Gate;
+export type Long<F> = {
+  condition: (facts: F) => Gate;
   allow?: number;
 };
+export type Rule<F> = Short<F> | Long<F>;
 
-export type GateConfig = {
+export type GateConfig<F> = {
   name: string;
   description: string;
-  rules: (Short | Long)[];
+  rules: Rule<F>[];
 };
 
-export type Facts = {
-  startTime?: number;
-  userId?: string;
-  gate?: GateConfig;
-};
+// Utility type for obtaining the type of
+// the facts expected by a GateConfig
+export type ExtractGateConfigFacts<T> =
+  T extends GateConfig<infer F>
+    ? F
+    : never;
