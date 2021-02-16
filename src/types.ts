@@ -13,12 +13,11 @@ export type Rule<F> = Short<F> | Long<F>;
 export type GateConfig<F> = {
   name: string;
   description: string;
-  rules: Rule<F>[];
+  targeting: Rule<F>[];
 };
 
 // Utility type for obtaining the type of
 // the facts expected by a GateConfig
-export type ExtractGateConfigFacts<T> =
-  T extends GateConfig<infer F>
-    ? F
-    : never;
+export type ExtractGateConfigParams<T> = T extends GateConfig<infer F>
+  ? F
+  : never;
