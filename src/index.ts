@@ -3,7 +3,7 @@ import { ExtractGateConfigParams, Gate, GateConfig } from './types';
 
 export default async function BuildGate<T extends GateConfig<any>>(
   gate: T
-): Promise<(facts: ExtractGateConfigParams<T>) => Gate> {
+): Promise<(params: ExtractGateConfigParams<T>) => Gate> {
   const rules = await Promise.all(
     gate.targeting.map(async (rule) => {
       return {

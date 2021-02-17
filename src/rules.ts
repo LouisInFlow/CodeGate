@@ -1,25 +1,25 @@
 import { GateConfig } from './types';
 import BuildGate from '../src/index';
 
-export async function canPassArgumentsToRule(facts: {
+export async function canPassArgumentsToRule(params: {
   userId: string;
 }): Promise<boolean> {
   const allowList = ['louis'];
-  return Promise.resolve(allowList.includes(facts.userId));
+  return Promise.resolve(allowList.includes(params.userId));
 }
 
 export async function isAnyUser(): Promise<boolean> {
   return Promise.resolve(true);
 }
 
-export async function isPastStartTime(facts: { startTime: number }): Promise<boolean> {
-  return Promise.resolve(facts.startTime <= Date.now());
+export async function isPastStartTime(params: { startTime: number }): Promise<boolean> {
+  return Promise.resolve(params.startTime <= Date.now());
 }
 
-export function passesGate<F>(gateConfig: GateConfig<F>) {
-  return async function (facts: F): Promise<boolean> {
+export function passesGate<P>(gateConfig: GateConfig<P>) {
+  return async function (params: P): Promise<boolean> {
     const nestedGate = await BuildGate(gateConfig);
-    const passedNestedGate = await nestedGate(facts);
+    const passedNestedGate = await nestedGate(params);
 
     return passedNestedGate;
   };
