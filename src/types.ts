@@ -18,6 +18,6 @@ export type GateConfig<P> = {
 
 // Utility type for obtaining the type of
 // the params expected by a GateConfig
-export type ExtractGateConfigParams<T> = T extends GateConfig<infer F>
-  ? F
+export type ExtractGateConfigParams<T> = T extends GateConfig<infer P>
+  ? P
   : never;
