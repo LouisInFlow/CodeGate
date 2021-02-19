@@ -1,18 +1,12 @@
 import BuildGate from '../src/index';
 import {
   canPassArgumentsToRule,
-<<<<<<< HEAD
   doesNotSatisfy,
   isAnyUser,
   isPastStartTime,
   passesGate,
   satisfiesAllOf,
   satisfiesAnyOf,
-=======
-  isAnyUser,
-  isPastStartTime,
-  passesGate,
->>>>>>> main
 } from '../src/rules';
 
 test('Can pass arguments to rule', async () => {
@@ -63,7 +57,6 @@ test('Can use gate as rule', async () => {
 });
 
 test('Can use complex rules', async () => {
-<<<<<<< HEAD
   const ComplexGate1 = await BuildGate({
     name: 'satisfiesAllOf',
     description: 'testing satisfiesAllOf',
@@ -90,24 +83,6 @@ test('Can use complex rules', async () => {
 
   expect(await ComplexGate3({ userId: 'louis' })).toBe(false);
   expect(await ComplexGate3({ userId: 'jamie' })).toBe(true);
-=======
-  const ComplexGate = await BuildGate({
-    name: 'canPassArgumentsToRule',
-    description: 'testing canPassArgumentsToRule',
-    targeting: [
-      (params) =>
-        new Promise(async (resolve, reject) => {
-          resolve(
-            (await isAnyUser()) && (await canPassArgumentsToRule(params))
-          );
-        }),
-    ],
-  });
-
-  // ComplexGate should require the types from canPassArgumentsToRule.
-  // Can we solve with utility functions? Any and All for combining rules?
-  expect(await ComplexGate({})).toBe(true);
->>>>>>> main
 });
 
 // isPastStartTime
