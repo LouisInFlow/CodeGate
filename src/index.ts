@@ -1,9 +1,9 @@
 const RuleEngine = require('./node-rules');
-import { ExtractGateConfigParams, GateConfig } from './types';
+import { ExtractGateConfigParams, GateConfig, Result } from './types';
 
 export default async function BuildGate<T extends GateConfig<any>>(
   gateConfig: T
-): Promise<(facts: ExtractGateConfigParams<T>) => Promise<boolean>> {
+): Promise<(facts: ExtractGateConfigParams<T>) => Result> {
   const rules = await Promise.all(
     gateConfig.targeting.map(async (rule) => {
       return {

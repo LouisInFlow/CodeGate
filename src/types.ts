@@ -1,6 +1,7 @@
-export type Short<F> = (facts: F) => Promise<boolean>;
+export type Result = Promise<boolean>;
+export type Short<F> = (facts: F) => Result;
 export type Long<F> = {
-  condition: (facts: F) => Promise<boolean>;
+  condition: (facts: F) => Result;
   allow?: number;
 };
 export type Rule<F> = Short<F> | Long<F>;
