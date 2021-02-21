@@ -2,7 +2,7 @@ export type Result = Promise<boolean>;
 export type Short<F> = (facts: F) => Result;
 export type Long<F> = {
   condition: (facts: F) => Result;
-  allow?: number;
+  allow: number;
 };
 export type Rule<F> = Short<F> | Long<F>;
 
