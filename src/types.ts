@@ -1,11 +1,6 @@
-// TODO: Is a Gate a Promise<boolean>,
-// or a function which returns a Promise<boolean>?
-// The return type of BuildGate suggests the latter.
-export type Gate = Promise<boolean>;
-
-export type Short<F> = (facts: F) => Gate;
+export type Short<F> = (facts: F) => Promise<boolean>;
 export type Long<F> = {
-  condition: (facts: F) => Gate;
+  condition: (facts: F) => Promise<boolean>;
   allow?: number;
 };
 export type Rule<F> = Short<F> | Long<F>;
