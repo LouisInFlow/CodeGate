@@ -1,12 +1,14 @@
 import BuildGate from '../src/index';
 import {
-  canPassArgumentsToRule,
   doesNotSatisfy,
-  isAnyUser,
-  isPastStartTime,
   passesGate,
   satisfiesAllOf,
   satisfiesAnyOf,
+} from '../src/higher-order-rules';
+import {
+  canPassArgumentsToRule,
+  isAnyUser,
+  isPastStartTime,
 } from '../src/rules';
 
 test('Can pass arguments to rule', async () => {
@@ -56,7 +58,7 @@ test('Can use gate as rule', async () => {
   expect(await gateAsRuleGate({})).toBe(true);
 });
 
-test('Can use complex rules', async () => {
+test('Can use higher-order rules', async () => {
   const ComplexGate1 = await BuildGate({
     name: 'satisfiesAllOf',
     description: 'testing satisfiesAllOf',
