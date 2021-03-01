@@ -1,9 +1,14 @@
 import BuildGate from '../src/index';
 import {
+  doesNotSatisfy,
+  passesGate,
+  satisfiesAllOf,
+  satisfiesAnyOf,
+} from '../src/higher-order-rules';
+import {
   canPassArgumentsToRule,
   isAnyUser,
   isPastStartTime,
-  passesGate,
 } from '../src/rules';
 
 test('Can pass arguments to rule', async () => {
@@ -53,23 +58,33 @@ test('Can use gate as rule', async () => {
   expect(await gateAsRuleGate({})).toBe(true);
 });
 
-test('Can use complex rules', async () => {
-  const ComplexGate = await BuildGate({
-    name: 'canPassArgumentsToRule',
-    description: 'testing canPassArgumentsToRule',
-    targeting: [
-      (params) =>
-        new Promise(async (resolve, reject) => {
-          resolve(
-            (await isAnyUser()) && (await canPassArgumentsToRule(params))
-          );
-        }),
-    ],
+test('Can use higher-order rules', async () => {
+  const ComplexGate1 = await BuildGate({
+    name: 'satisfiesAllOf',
+    description: 'testing satisfiesAllOf',
+    targeting: [satisfiesAllOf(isAnyUser, canPassArgumentsToRule)]
   });
 
-  // ComplexGate should require the types from canPassArgumentsToRule.
-  // Can we solve with utility functions? Any and All for combining rules?
-  expect(await ComplexGate({})).toBe(true);
+  const ComplexGate2 = await BuildGate({
+    name: 'satisfiesAnyOf',
+    description: 'testing satisfiesAnyOf',
+    targeting: [satisfiesAnyOf(isAnyUser, canPassArgumentsToRule)]
+  });
+
+  const ComplexGate3 = await BuildGate({
+    name: 'doesNotSatisfy',
+    description: 'testing doesNotSatisfy',
+    targeting: [doesNotSatisfy(canPassArgumentsToRule)]
+  });
+
+  expect(await ComplexGate1({ userId: 'louis' })).toBe(true);
+  expect(await ComplexGate1({ userId: 'jamie' })).toBe(false);
+
+  expect(await ComplexGate2({ userId: 'louis' })).toBe(true);
+  expect(await ComplexGate2({ userId: 'jamie' })).toBe(true);
+
+  expect(await ComplexGate3({ userId: 'louis' })).toBe(false);
+  expect(await ComplexGate3({ userId: 'jamie' })).toBe(true);
 });
 
 // isPastStartTime
