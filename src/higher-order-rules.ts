@@ -1,9 +1,22 @@
 import BuildGate from './index';
-import { ExtractMultipleRuleParams, GateConfig, Rule } from './types';
+import {
+  ExtractGateConfigParams,
+  ExtractMultipleRuleParams,
+  ExtractSingleRuleParams,
+  GateConfig,
+  Result,
+  Rule
+} from './types';
 import { makeParamEvaluator } from './utils';
 
-export function passesGate<P>(gateConfig: GateConfig<P>) {
-  return async function (params: P): Promise<boolean> {
+export function passesGate<T extends GateConfig<{}>>(
+  gateConfig: T
+): (params?: ExtractGateConfigParams<T>) => Result;
+export function passesGate<T extends GateConfig<any>>(
+  gateConfig: T
+): (params: ExtractGateConfigParams<T>) => Result;
+export function passesGate(gateConfig) {
+  return async function (params) {
     const nestedGate = await BuildGate(gateConfig);
     const passedNestedGate = await nestedGate(params);
 
@@ -31,8 +44,8 @@ export function satisfiesAnyOf<T extends Rule<any>[]>(...rules: T) {
   }
 }
 
-export function doesNotSatisfy<P>(rule: Rule<P>) {
-  return async function doesNotSatisfySubRule(params: P) {
+export function doesNotSatisfy<T extends Rule<any>>(rule: T) {
+  return async function doesNotSatisfySubRule(params: ExtractSingleRuleParams<T>) {
     const paramEvaluator = makeParamEvaluator(params);
 
     const subRuleResult = await paramEvaluator(rule);

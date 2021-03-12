@@ -53,9 +53,11 @@ test('Can use gate as rule', async () => {
     ],
   });
 
-  // should be able to call gateAsRuleGate without any params, because none
-  // are required.
   expect(await gateAsRuleGate({})).toBe(true);
+
+  // should also be able to call gateAsRuleGate without any params, because none
+  // are required.
+  expect(await gateAsRuleGate()).toBe(true);
 });
 
 test('Can use higher-order rules', async () => {
